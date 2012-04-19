@@ -78,6 +78,8 @@ class Map {
     int small_keys_variable;      /**< index of the variable of the savegame where the number of small keys
                                    * of this map is saved (-1 means that the small keys are not enabled on this map) */
 
+    MapEntity* last_collision;    /**< The last entity that was collided with. */
+
     // screen
 
     Camera* camera;               /**< determines the visible area of the map */
@@ -172,6 +174,8 @@ class Map {
     Ground get_tile_ground(Layer layer, int x, int y);
     Ground get_tile_ground(Layer layer, const Rectangle &coordinates);
     bool has_empty_tiles(Layer layer, const Rectangle& collision_box);
+
+    MapEntity* get_last_collision();
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity &entity);

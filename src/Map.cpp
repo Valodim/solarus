@@ -705,22 +705,22 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
 
   std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
 
-  bool collision = false;
+  last_collision = NULL;
 
   std::list<MapEntity*>::iterator i;
   for (i = obstacle_entities.begin();
-       i != obstacle_entities.end() && !collision;
+       i != obstacle_entities.end() && !last_collision;
        i++) {
 
     MapEntity *entity = *i;
-    collision =
-	entity != &entity_to_check
+    if(entity != &entity_to_check
 	&& entity->is_enabled()
 	&& entity->is_obstacle_for(entity_to_check)
-	&& entity->overlaps(collision_box);
+	&& entity->overlaps(collision_box))
+        last_collision = entity;
   }
 
-  return collision;
+  return last_collision;
 }
 
 /**
@@ -731,6 +731,9 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
 bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
+
+  // make sure this is NULL at the beginning of any collision
+  last_collision = NULL;
 
   int x, y, x1, x2, y1, y2;
   bool collision = false;
@@ -906,6 +909,13 @@ bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
   }
 
   return empty_tile;
+}
+
+/**
+ * @brief Returns the last entity a collision happened with, or NULL if it was another obstacle.
+ */
+MapEntity* Map::get_last_collision() {
+    return last_collision;
 }
 
 /**
