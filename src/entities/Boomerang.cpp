@@ -20,14 +20,17 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
+#include "entities/Fire.h"
 #include "entities/NPC.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
 #include "movements/StraightMovement.h"
+#include "lua/ItemScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
 /**
@@ -316,6 +319,15 @@ void Boomerang::update() {
 void Boomerang::notify_obstacle_reached() {
 
   if (!is_going_back()) {
+
+    Map &map = get_map();
+    MapEntity* ent = map.get_last_collision();
+    if(ent && ent->get_type() == NON_PLAYING_CHARACTER) {
+      ItemScript* script = &get_game().get_equipment().get_item_script("boomerang");
+      script->event_npc_collision(ent->get_name());
+      // MapEntities &entities = get_map().get_entities();
+      // entities.add_entity(new Fire(get_layer(), Rectangle(ent->get_x(), ent->get_y()-8)));
+    }
 
     if (!get_map().test_collision_with_border(
         get_movement()->get_last_collision_box_on_obstacle())) {

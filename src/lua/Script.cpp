@@ -1001,6 +1001,16 @@ void Script::event_dialog_finished(const std::string& dialog_id, int answer) {
 }
 
 /**
+ * @brief Notifies the script that something just collided with it
+ * key in front of an NPC.
+ * @param npc_name name of the NPC
+ */
+void Script::event_npc_collision(const std::string& npc_name) {
+
+  notify_script("event_npc_collision", "s", npc_name.c_str());
+}
+
+/**
  * @brief Notifies the script that the player has just pressed the action
  * key in front of an NPC.
  * @param npc_name name of the NPC
