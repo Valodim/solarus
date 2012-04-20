@@ -221,6 +221,9 @@ void Script::register_apis() {
   if (apis_enabled && GAME_API) {
     register_game_api();
   }
+  if ( (apis_enabled && HERO_API) || true) {
+    register_hero_api();
+  }
   if (apis_enabled && MAP_API) {
     register_map_api();
   }
@@ -324,6 +327,21 @@ void Script::register_game_api() {
   };
   luaL_register(l, "sol.game", game_api);
 }
+
+/**
+ * @brief Registers to the script the functions of the hero API.
+ */
+void Script::register_hero_api() {
+
+  static luaL_Reg map_api[] = {
+      { "change_state", hero_api_change_state },
+      { "change_state_free", hero_api_change_state_free },
+      { NULL, NULL }
+  };
+  luaL_register(l, "sol.hero", map_api);
+
+}
+
 
 /**
  * @brief Registers to the script the functions of the map API.

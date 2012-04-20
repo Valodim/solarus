@@ -49,6 +49,7 @@
 #include "hero/BoomerangState.h"
 #include "hero/HookshotState.h"
 #include "hero/BowState.h"
+#include "hero/ScriptedState.h"
 #include "movements/StraightMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
@@ -2298,3 +2299,6 @@ void Hero::start_state_from_ground() {
   }
 }
 
+void Hero::start_scriptable(std::string scriptname) {
+  set_state(new ScriptedState(*this, scriptname));
+}

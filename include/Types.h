@@ -130,6 +130,7 @@ class Script;
 class MapScript;
 class ItemScript;
 class EnemyScript;
+class StateScript;
 
 // HUD
 class HUD;

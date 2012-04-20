@@ -39,7 +39,8 @@ class Script {
       GAME_API          = 0x0002,
       MAP_API           = 0x0004,
       ITEM_API          = 0x0008,
-      ENEMY_API         = 0x0010
+      ENEMY_API         = 0x0010,
+      HERO_API          = 0x0020
     };
 
   private:
@@ -70,6 +71,7 @@ class Script {
     void register_apis();
     void register_main_api();
     void register_game_api();
+    void register_hero_api();
     void register_map_api();
     void register_item_api();
     void register_enemy_api();
@@ -157,6 +159,10 @@ class Script {
       game_api_remove_item_amount,
       game_api_is_dungeon_finished,
       game_api_set_dungeon_finished,
+
+      // hero API
+      hero_api_change_state,
+      hero_api_change_state_free,
 
       // map API
       map_api_hero_freeze,

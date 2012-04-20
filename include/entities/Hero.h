@@ -32,6 +32,8 @@
  */
 class Hero: public MapEntity {
 
+  friend class StateScript;
+
   private:
 
     // state
@@ -66,6 +68,8 @@ class Hero: public MapEntity {
     class BowState;                 /**< the hero is shooting an arrow with a bow */
     class FreezedState;             /**< the hero cannot move for various possible reasons,
                                      * including an instruction from the script */
+
+    class ScriptedState;             /**< my elusive scripted state */
 
     State *state;                   /**< the current internal state */
     std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
@@ -323,6 +327,8 @@ class Hero: public MapEntity {
     void start_back_to_solid_ground(bool use_memorized_xy,
         uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
+
+    void start_scriptable(std::string);
 };
 
 #endif
