@@ -57,12 +57,6 @@ const std::string Enemy::hurt_style_names[] = {
   "boss",
 };
 
-const std::string Enemy::obstacle_behavior_names[] = {
-  "normal",
-  "flying",
-  "swimming",
-};
-
 /**
  * @brief Creates an enemy.
  *
@@ -72,7 +66,7 @@ const std::string Enemy::obstacle_behavior_names[] = {
  */
 Enemy::Enemy(const ConstructionParameters &params):
 
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  ScriptedEntity(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
   damage_on_hero(1),
   magic_damage_on_hero(0),
   life(1),
@@ -83,8 +77,6 @@ Enemy::Enemy(const ConstructionParameters &params):
   minimum_shield_needed(0),
   rank(RANK_NORMAL),
   savegame_variable(-1),
-  obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  displayed_in_y_order(true),
   father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
@@ -253,81 +245,6 @@ void Enemy::notify_map_opening_transition_finished() {
  */
 Enemy::Rank Enemy::get_rank() {
   return rank;
-}
-
-/**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
- */
-bool Enemy::is_obstacle_for(MapEntity& other) {
-
-  return is_enabled() && other.is_enemy_obstacle(*this);
-}
-
-/**
- * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
- * @param destructible_item a destructible item
- * @return true if the destructible item is currently an obstacle this entity
- */
-bool Enemy::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
-
-  // the destructible item is an obstacle unless the enemy is already overlapping it,
-  // which is possible with bomb flowers
-  if (this->overlaps(destructible_item)) {
-    return false;
-  }
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
-}
-
-/**
- * @brief Returns whether a teletransporter is currently considered as an obstacle.
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is currently an obstacle for this entity
- */
-bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
-  return false;
-}
-
-/**
- * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
- * @return true if the deep water tiles are currently an obstacle for this entity
- */
-bool Enemy::is_deep_water_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING
-      && obstacle_behavior != OBSTACLE_BEHAVIOR_SWIMMING;
-}
-
-/**
- * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
- * @return true if the shallow water tiles are currently an obstacle for this entity
- */
-bool Enemy::is_shallow_water_obstacle() {
-  return false;
-}
-
-/**
- * @brief Returns whether a hole is currently considered as an obstacle by this entity.
- * @return true if the holes are currently an obstacle for this entity
- */
-bool Enemy::is_hole_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
-}
-
-/**
- * @brief Returns whether prickles are currently considered as obstacle by this entity.
- * @return true if prickles are currently obstacle for this entity
- */
-bool Enemy::is_prickle_obstacle() {
-  return false;
-}
-
-/**
- * @brief Returns whether lava is currently considered as obstacle by this entity.
- * @return true if lava is currently obstacle for this entity
- */
-bool Enemy::is_lava_obstacle() {
-  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
@@ -532,18 +449,6 @@ void Enemy::set_animation(const std::string &animation) {
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->set_current_animation(animation);
   }
-}
-
-/**
- * @brief Returns whether this entity has to be displayed in y order.
- *
- * This function returns whether the entity should be displayed above
- * the hero and other entities having this property when it is in front of them.
- *
- * @return true if this type of entity is displayed at the same level as the hero
- */
-bool Enemy::is_displayed_in_y_order() {
-  return displayed_in_y_order;
 }
 
 /**

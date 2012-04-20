@@ -55,6 +55,8 @@ enum EntityType {
   DOOR                      = 18,   /**< a door to open with a key or another action */
   STAIRS                    = 19,   /**< stairs between two maps or inside a single map */
 
+  SCRIPTED                   = 100, /**< a scripted entity, spawned in some script */
+
   // entities created only during the game (not stored in maps)
 
   HERO                      = 1000, /**< the hero */

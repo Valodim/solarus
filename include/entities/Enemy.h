@@ -23,6 +23,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
+#include "entities/ScriptedEntity.h"
 
 /**
  * @brief Abstract class representing an enemy.
@@ -42,7 +43,7 @@
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined by the subclasses.
  */
-class Enemy: public Detector {
+class Enemy: public ScriptedEntity {
 
   public:
 
@@ -69,16 +70,6 @@ class Enemy: public Detector {
       HURT_MONSTER,  /**< "monster_hurt" (and if necessary "enemy_killed") is played */
       HURT_BOSS,     /**< "boss_hurt" or "boss_killed" is played and explosions are created */
       HURT_NUMBER
-    };
-
-    /**
-     * @brief Defines how an enemy behaves with obstacles.
-     */
-    enum ObstacleBehavior {
-      OBSTACLE_BEHAVIOR_NORMAL,   /**< the enemy is on the ground and stops on normal obstacles */
-      OBSTACLE_BEHAVIOR_FLYING,   /**< the enemy ignores holes, lava, water, etc. */
-      OBSTACLE_BEHAVIOR_SWIMMING, /**< the enemy can move in water */
-      OBSTACLE_BEHAVIOR_NUMBER
     };
 
     /**
@@ -121,9 +112,6 @@ class Enemy: public Detector {
     Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
     int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
 							 * or -1 if it is not saved */
-    ObstacleBehavior obstacle_behavior;                 /**< behavior with obstacles */
-    static const std::string obstacle_behavior_names[]; /**< name of each existing behavior with obstacles */
-    bool displayed_in_y_order;                          /**< indicates that the enemy is displayed as the same level as the hero */
     std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
     // enemy state
@@ -212,18 +200,7 @@ class Enemy: public Detector {
     virtual void notify_map_opening_transition_finished();
     Rank get_rank();
 
-    // obstacles
-    bool is_obstacle_for(MapEntity& other);
-    bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
-    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
-    bool is_deep_water_obstacle();
-    bool is_shallow_water_obstacle();
-    bool is_hole_obstacle();
-    bool is_prickle_obstacle();
-    bool is_lava_obstacle();
-
     // enemy state
-    bool is_displayed_in_y_order();
     virtual void update();
     virtual void set_suspended(bool suspended);
     void notify_enabled(bool enabled);
