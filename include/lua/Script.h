@@ -164,6 +164,13 @@ class Script {
       hero_api_change_state,
       hero_api_change_state_free,
 
+      hero_api_get_wanted_direction8,
+
+      hero_api_set_animation_custom,
+      hero_api_is_animation_finished,
+
+      hero_api_spawn_entity,
+
       // map API
       map_api_hero_freeze,
       map_api_hero_unfreeze,

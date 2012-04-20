@@ -58,3 +58,75 @@ int Script::hero_api_change_state_free(lua_State* l) {
 
   return 0;
 }
+
+/**
+ * @brief Makes the hero go into a scriptable state.
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::hero_api_get_wanted_direction8(lua_State* l) {
+
+    Script& script = get_script(l, 0);
+
+    lua_pushinteger(l, script.get_game().get_controls().get_wanted_direction8());
+
+    return 1;
+}
+
+/**
+ * @brief Makes the hero go into a scriptable state.
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::hero_api_spawn_entity(lua_State* l) {
+
+    Script& script = get_script(l, 4);
+
+    const int max_distance = luaL_checkinteger(l, 1);
+    const int speed = luaL_checkinteger(l, 2);
+    const int angle = luaL_checkinteger(l, 3);
+    const std::string& sprite_name = luaL_checkstring(l, 4);
+
+    script.get_game().get_hero().get_map().get_entities().add_entity(new Boomerang(script.get_game().get_hero(), max_distance, speed, angle, sprite_name));
+
+    return 0;
+
+}
+
+/**
+ * @brief Sets the hero's animation to a custom sprite
+ *
+ * - Argument 1 (string): tunic animation
+ * - Argument 2 (string): shield animation
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::hero_api_set_animation_custom(lua_State* l) {
+
+  Script& script = get_script(l, 2);
+
+  const std::string& anim_tunic = luaL_checkstring(l, 1);
+  const std::string& anim_shield = luaL_checkstring(l, 2);
+
+  script.get_game().get_hero().get_sprites().set_animation(anim_tunic, anim_shield);
+
+  return 0;
+}
+
+
+/**
+ * @brief Return whether the hero's current animation is finished
+ *
+ * - Argument 1 (string): tunic animation
+ * - Argument 2 (string): shield animation
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::hero_api_is_animation_finished(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  
+  lua_pushboolean(l, script.get_game().get_hero().is_animation_finished());
+
+  return 1;
+}

@@ -336,6 +336,13 @@ void Script::register_hero_api() {
   static luaL_Reg map_api[] = {
       { "change_state", hero_api_change_state },
       { "change_state_free", hero_api_change_state_free },
+
+      { "get_wanted_direction8", hero_api_get_wanted_direction8 },
+
+      { "set_animation_custom", hero_api_set_animation_custom },
+      { "is_animation_finished", hero_api_is_animation_finished },
+
+      { "spawn_entity", hero_api_spawn_entity },
       { NULL, NULL }
   };
   luaL_register(l, "sol.hero", map_api);
