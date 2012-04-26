@@ -2303,6 +2303,64 @@ int Script::map_api_arrow_remove(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
+int Script::map_api_entity_create(lua_State *l) {
+
+  Script& script = get_script(l, 5);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  const std::string& breed = luaL_checkstring(l, 2);
+  int layer = luaL_checkinteger(l, 3);
+  int x = luaL_checkinteger(l, 4);
+  int y = luaL_checkinteger(l, 5);
+
+  MapEntities& entities = script.get_map().get_entities();
+
+  ScriptedEntity *entity = new ScriptedEntity(name, breed);
+
+  // initialize the fields
+  entity->set_layer(Layer(layer));
+  entity->set_xy(x, y);
+  entity->set_direction(1);
+
+  entities.add_entity(entity);
+
+  return 0;
+}
+
+/**
+ * @brief Enables or disables an enemy.
+ *
+ * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_entity_set_enabled(lua_State* l) {
+
+  Script& script = get_script(l, 2);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2);
+
+  MapEntities& entities = script.get_map().get_entities();
+  MapEntity* entity = entities.get_entity(SCRIPTED, name);
+  entity->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Creates an enemy on the map.
+ *
+ * - Argument 1 (string): name of the enemy to create
+ * - Argument 2 (string): breed of the enemy to create
+ * - Argument 3 (integer): layer on the map
+ * - Argument 4 (int): x x coordinate on the map
+ * - Argument 5 (int): y y coordinate on the map
+ *
+ * @param l the Lua context that is calling this function
+ */
 int Script::map_api_enemy_create(lua_State *l) {
 
   Script& script = get_script(l, 5);

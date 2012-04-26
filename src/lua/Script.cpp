@@ -210,6 +210,13 @@ Enemy& Script::get_enemy() {
   throw;
 }
 
+ScriptedEntity& Script::get_entity() {
+
+  Debug::die("This script does not provide the scripted entity API");
+  throw;
+}
+
+
 /**
  * @brief Tells the Lua context what C++ functions it can call.
  */
@@ -232,6 +239,9 @@ void Script::register_apis() {
   }
   if (apis_enabled && ENEMY_API) {
     register_enemy_api();
+  }
+  if (apis_enabled && ENTITY_API) {
+    register_entity_api();
   }
 }
 
@@ -452,6 +462,8 @@ void Script::register_map_api() {
       { "explosion_create", map_api_explosion_create },
       { "fire_create", map_api_fire_create },
       { "arrow_remove", map_api_arrow_remove },
+      { "entity_create", map_api_entity_create },
+      { "entity_set_enabled", map_api_entity_set_enabled },
       { "enemy_create", map_api_enemy_create },
       { "enemy_remove", map_api_enemy_remove },
       { "enemy_remove_group", map_api_enemy_remove_group },
@@ -530,38 +542,48 @@ void Script::register_enemy_api() {
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
       { "set_invincible", enemy_api_set_invincible },
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
-      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
       { "set_no_treasure", enemy_api_set_no_treasure },
       { "set_random_treasure", enemy_api_set_random_treasure },
-      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
-      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", enemy_api_get_optimization_distance },
-      { "set_optimization_distance", enemy_api_set_optimization_distance },
-      { "get_size", enemy_api_get_size },
-      { "set_size", enemy_api_set_size },
-      { "get_origin", enemy_api_get_origin },
-      { "set_origin", enemy_api_set_origin },
-      { "get_position", enemy_api_get_position },
-      { "set_position", enemy_api_set_position },
-      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
-      { "get_angle_to_hero", enemy_api_get_angle_to_hero },
-      { "test_obstacles", enemy_api_test_obstacles },
-      { "snap_to_grid", enemy_api_snap_to_grid },
-      { "get_movement", enemy_api_get_movement },
-      { "start_movement", enemy_api_start_movement },
-      { "stop_movement", enemy_api_stop_movement },
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
-      { "create_sprite", enemy_api_create_sprite },
-      { "remove_sprite", enemy_api_remove_sprite },
-      { "get_sprite", enemy_api_get_sprite },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },
       { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
   luaL_register(l, "sol.enemy", enemy_api);
+}
+
+void Script::register_entity_api() {
+
+  static luaL_Reg entity_api[] = {
+      { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
+      { "get_obstacle_behavior", entity_api_get_obstacle_behavior },
+      { "set_obstacle_behavior", entity_api_set_obstacle_behavior },
+      { "get_optimization_distance", entity_api_get_optimization_distance },
+      { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "get_size", entity_api_get_size },
+      { "set_size", entity_api_set_size },
+      { "get_origin", entity_api_get_origin },
+      { "set_origin", entity_api_set_origin },
+      { "get_position", entity_api_get_position },
+      { "set_position", entity_api_set_position },
+      { "get_distance_to_hero", entity_api_get_distance_to_hero },
+      { "get_angle_to_hero", entity_api_get_angle_to_hero },
+      { "test_obstacles", entity_api_test_obstacles },
+      { "snap_to_grid", entity_api_snap_to_grid },
+      { "get_movement", entity_api_get_movement },
+      { "start_movement", entity_api_start_movement },
+      { "stop_movement", entity_api_stop_movement },
+      { "create_sprite", entity_api_create_sprite },
+      { "remove_sprite", entity_api_remove_sprite },
+      { "get_sprite", entity_api_get_sprite },
+      { "send_message", entity_api_send_message },
+      { NULL, NULL }
+  };
+
+  luaL_register(l, "sol.entity", entity_api);
 }
 
 /**

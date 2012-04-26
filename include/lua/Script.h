@@ -40,7 +40,8 @@ class Script {
       MAP_API           = 0x0004,
       ITEM_API          = 0x0008,
       ENEMY_API         = 0x0010,
-      HERO_API          = 0x0020
+      HERO_API          = 0x0020,
+      ENTITY_API        = 0x0040
     };
 
   private:
@@ -75,6 +76,7 @@ class Script {
     void register_map_api();
     void register_item_api();
     void register_enemy_api();
+    void register_entity_api();
 
     // timers
     void remove_all_timers();
@@ -268,6 +270,8 @@ class Script {
       map_api_explosion_create,
       map_api_fire_create,
       map_api_arrow_remove,
+      map_api_entity_create,
+      map_api_entity_set_enabled,
       map_api_enemy_create,
       map_api_enemy_remove,
       map_api_enemy_remove_group,
@@ -328,35 +332,37 @@ class Script {
       enemy_api_set_default_attack_consequences_sprite,
       enemy_api_set_invincible,
       enemy_api_set_invincible_sprite,
-      enemy_api_set_layer_independent_collisions,
       enemy_api_set_treasure,
       enemy_api_set_no_treasure,
       enemy_api_set_random_treasure,
-      enemy_api_get_obstacle_behavior,
-      enemy_api_set_obstacle_behavior,
-      enemy_api_get_optimization_distance,
-      enemy_api_set_optimization_distance,
-      enemy_api_get_size,
-      enemy_api_set_size,
-      enemy_api_get_origin,
-      enemy_api_set_origin,
-      enemy_api_get_position,
-      enemy_api_set_position,
-      enemy_api_get_distance_to_hero,
-      enemy_api_get_angle_to_hero,
-      enemy_api_test_obstacles,
-      enemy_api_snap_to_grid,
-      enemy_api_get_movement,
-      enemy_api_start_movement,
-      enemy_api_stop_movement,
       enemy_api_restart,
       enemy_api_hurt,
-      enemy_api_create_sprite,
-      enemy_api_remove_sprite,
-      enemy_api_get_sprite,
       enemy_api_create_son,
       enemy_api_get_father,
-      enemy_api_send_message;
+      enemy_api_send_message,
+
+      entity_api_set_layer_independent_collisions,
+      entity_api_create_sprite,
+      entity_api_remove_sprite,
+      entity_api_get_sprite,
+      entity_api_get_size,
+      entity_api_set_size,
+      entity_api_get_origin,
+      entity_api_set_origin,
+      entity_api_get_position,
+      entity_api_set_position,
+      entity_api_get_optimization_distance,
+      entity_api_set_optimization_distance,
+      entity_api_snap_to_grid,
+      entity_api_get_distance_to_hero,
+      entity_api_get_angle_to_hero,
+      entity_api_get_obstacle_behavior,
+      entity_api_set_obstacle_behavior,
+      entity_api_test_obstacles,
+      entity_api_get_movement,
+      entity_api_start_movement,
+      entity_api_stop_movement,
+      entity_api_send_message;
 
   protected:
 
@@ -390,6 +396,7 @@ class Script {
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
     virtual Enemy& get_enemy();
+    virtual ScriptedEntity& get_entity();
 
     virtual ~Script();
 

@@ -193,6 +193,7 @@ class Explosion;
 class Bomb;
 class Fire;
 class Hookshot;
+class ScriptedEntity;
 
 // tile patterns
 class Tileset;

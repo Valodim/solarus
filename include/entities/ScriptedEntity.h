@@ -21,6 +21,7 @@
 #include "Treasure.h"
 #include "entities/Detector.h"
 #include "entities/Explosion.h"
+#include "lua/EntityScript.h"
 
 /**
  * @brief Abstract class representing an enemy.
@@ -44,8 +45,10 @@ class ScriptedEntity: public Detector {
 
   public:
 
-    friend class ScriptedEntityScript;     // allow enemy scripts to access private data
+    // friend class ScriptedEntityScript;     // allow enemy scripts to access private data
     friend class Script;          // allow scripts with the enemy API to access private data
+
+    EntityScript* script;           /**< the script that controls this enemy */
 
   protected:
 
@@ -67,6 +70,7 @@ class ScriptedEntity: public Detector {
   protected:
 
     // creation
+    ScriptedEntity(const std::string &name, const std::string &script_name);
     ScriptedEntity(int collision_mode, const std::string &name, Layer layer,
 	int x, int y, int width, int height);
 

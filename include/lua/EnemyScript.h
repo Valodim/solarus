@@ -18,7 +18,7 @@
 #define SOLARUS_ENEMY_SCRIPT_H
 
 #include "Common.h"
-#include "lua/Script.h"
+#include "lua/EntityScript.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Layer.h"
 
@@ -28,7 +28,7 @@
  * This class makes the interface between the engine C++ code and the Lua script of an enemy.
  * If several instances of the same enemy exist in the map, each instance has its own script.
  */
-class EnemyScript: public Script {
+class EnemyScript: public EntityScript {
 
   private:
 
@@ -46,22 +46,6 @@ class EnemyScript: public Script {
     EnemyScript(CustomEnemy& enemy);
     ~EnemyScript();
 
-    void update();
-    void set_suspended(bool suspended);
-
-    void event_update();
-    void event_set_suspended(bool suspended);
-    void event_appear();
-    void event_enabled();
-    void event_disabled();
-    void event_restart();
-    void event_pre_display();
-    void event_post_display();
-    void event_position_changed(const Rectangle& xy);
-    void event_layer_changed(Layer layer);
-    void event_obstacle_reached();
-    void event_movement_changed(Movement& movement);
-    void event_movement_finished(Movement& movement);
     void event_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void event_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     void event_collision_enemy(const std::string& other_name, Sprite& other_sprite, Sprite& this_sprite);

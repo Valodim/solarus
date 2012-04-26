@@ -46,11 +46,19 @@ const std::string ScriptedEntity::obstacle_behavior_names[] = {
   "swimming",
 };
 
+ScriptedEntity::ScriptedEntity(const std::string &name, const std::string &script_name):
+  Detector(COLLISION_RECTANGLE, name, LAYER_LOW, 0, 0, 0, 0),
+  obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
+  displayed_in_y_order(true) {
+      script = NULL;
+}
+
 ScriptedEntity::ScriptedEntity(int collision_mode, const std::string &name, Layer layer,
     int x, int y, int width, int height):
   Detector(collision_mode, name, layer, x, y, width, height),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   displayed_in_y_order(true) {
+      script = NULL;
 }
 
 /**
@@ -274,7 +282,11 @@ void ScriptedEntity::notify_enabled(bool enabled) {
   MapEntity::notify_enabled(enabled);
 
   if (enabled) {
-    // initialize();
+      if (script == NULL) {
+        script = new EntityScript(*this);
+        script->set_suspended(is_suspended());
+        script->event_appear();
+      }
   }
 }
 /**
