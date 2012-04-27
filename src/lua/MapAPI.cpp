@@ -2351,6 +2351,25 @@ int Script::map_api_entity_set_enabled(lua_State* l) {
 }
 
 /**
+ * @brief Removes an Entity from the map.
+ *
+ * - Argument 1 (string): name of the NPC
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_entity_remove(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script.get_map().get_entities();
+  entities.remove_entity(SCRIPTED, name);
+
+  return 0;
+}
+
+/**
  * @brief Creates an enemy on the map.
  *
  * - Argument 1 (string): name of the enemy to create

@@ -464,6 +464,7 @@ void Script::register_map_api() {
       { "arrow_remove", map_api_arrow_remove },
       { "entity_create", map_api_entity_create },
       { "entity_set_enabled", map_api_entity_set_enabled },
+      { "entity_remove", map_api_entity_remove },
       { "enemy_create", map_api_enemy_create },
       { "enemy_remove", map_api_enemy_remove },
       { "enemy_remove_group", map_api_enemy_remove_group },

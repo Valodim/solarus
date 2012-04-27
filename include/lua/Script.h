@@ -272,6 +272,7 @@ class Script {
       map_api_arrow_remove,
       map_api_entity_create,
       map_api_entity_set_enabled,
+      map_api_entity_remove,
       map_api_enemy_create,
       map_api_enemy_remove,
       map_api_enemy_remove_group,
