@@ -1,5 +1,4 @@
 import sys
-import collections
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -18,13 +17,21 @@ if __name__ == "__main__":
         # load first line's parameters
         width, height, world, floor, x, y, small_keys_variable, tileset_id, music_id = first.split()
 
-        # use a dict that has an empty list as default value
-        entities = collections.defaultdict(lambda: [])
-        # load all remaining lines, ie, entities, and sort them by entity type
-        for line in f:
-            pieces = line.split()
-            entities[int(pieces[0])].append(pieces[1:])
+        print """
+    return {{
+        map_id = {:d},
+        width = {:s},
+        height = {:s},
+        world = {:s},
+        floor = {:s},
+        x = {:s},
+        y = {:s},
+        small_keys_variable = {:s},
+        tileset_id = "{:s}",
+        music_id = "{:s}",
+        entities = {{""".format(map_id, width, height, world, floor, x, y, small_keys_variable, tileset_id, music_id)
 
+        # I used to do something with those names, but we don't really need them anymore. Ah well.
         entity_types = {
                  0: [ 'tiles'              , '{}, {}, {}, {}, {}, {}' ],
                  1: [ 'destinations'       , '{}, {}, {}, "{:s}", {}' ],
@@ -48,38 +55,13 @@ if __name__ == "__main__":
                 19: [ 'stairs'             , '{}, {}, {}, "{:s}", {}, {}' ],
         }
 
-        print """
-    return {{
-        map_id = {:d},
-        width = {:s},
-        height = {:s},
-        world = {:s},
-        floor = {:s},
-        x = {:s},
-        y = {:s},
-        small_keys_variable = {:s},
-        tileset_id = "{:s}",
-        music_id = "{:s}",
-        entities = {{""".format(map_id, width, height, world, floor, x, y, small_keys_variable, tileset_id, music_id)
 
-        for i in entity_types:
-            # don't bother if there are no items
-            if i not in entities:
-                continue
-
+        # load all remaining lines, ie, entities, and just pass them through in lua format
+        for line in f:
+            pieces = line.split()
             print '\
-\
-            ["{}"] = {{'.format(entity_types[i][0])
-
-            for entity in entities[i]:
-                # note those fields were split by whitespace before, that means strings 
-                # are in quotes already, we don't need to take care of that!
-                print '\
-                {', entity_types[i][1].format(*entity), '},'
-
-            print "\
-            },"
+            {', pieces[0], ',', entity_types[int(pieces[0])][1].format(*pieces[1:]), '},'
 
         print "\
-        }\
+        }\n\
     }"
