@@ -378,7 +378,7 @@ public abstract class MapEntity extends Observable {
      * Sets whether the entity is initialized.
      * @param initialized true if the entity is initialized
      */
-    private void setInitialized(boolean initialized) {
+    public void setInitialized(boolean initialized) {
 	this.initialized = initialized;
     }
 
@@ -562,7 +562,7 @@ public abstract class MapEntity extends Observable {
      * @param x x coordinate of the top-left corner
      * @param y y coordinate of the top-left corner
      */
-    protected void setPositionTopLeftImpl(int x, int y) throws MapException {
+    public void setPositionTopLeftImpl(int x, int y) throws MapException {
 	positionInMap.x = x;
 	positionInMap.y = y;
     }
@@ -1248,6 +1248,14 @@ public abstract class MapEntity extends Observable {
 	this.subtype = subtype;
 	setChanged();
 	notifyObservers();
+    }
+
+    /**
+     * Returns an iterator over this item's property names.
+     * @return iterator over this item's property names
+     */
+    public Iterator<String> getPropertyIterator() {
+        return specificProperties.keySet().iterator();
     }
 
     /**

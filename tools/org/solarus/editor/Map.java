@@ -1032,6 +1032,8 @@ public class Map extends Observable {
 	setChanged();
 	notifyObservers();
 
+        history.setSaved();
+
         // Make the compiler happy :)
         if(true)
             return;
