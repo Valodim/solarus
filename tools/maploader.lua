@@ -29,7 +29,7 @@ local Layer = luajava.bindClass("org.solarus.editor.entities.Layer")
 function loadMap(mapId, map)
     print("Loading " .. mapId .. " :)")
 
-    map_data = require("map_" .. mapId .. "_data")
+    local map_data = require("map_" .. mapId .. "_data")
 
     -- Set a bunch of trivial data in this map
     map:setSize(map_data.width, map_data.height)
@@ -42,43 +42,34 @@ function loadMap(mapId, map)
 
     for k, e in ipairs(map_data.entities) do
 
-        entity = luajava.new(entity_types[e[1]], map)
+        local entity = luajava.new(entity_types[e[1]], map)
 
         entity:setLayer(Layer:get(e[2]))
         entity:setPositionTopLeftImpl(e[3], e[4])
 
-        print(e[3], e[4])
-
-        print('1')
-
         -- couple of properties
-        pos = 5
+        local pos = 5
         -- if the next two vars are sizes, ...
         if entity:isSizeVariable() then
             -- ... skip them until later
             pos = pos+2
         end
 
-        print('2')
         if entity:hasName() then
             entity:setName(e[pos]);
             pos = pos+1
         end
 
-        print('3')
         if entity:hasDirectionProperty() then
             entity:setDirection(e[pos])
             pos = pos+1
         end
 
-        print('4')
         if entity:hasSubtype() then
-            print(type(e[pos]))
             entity:setSubtypeId(e[pos])
             pos = pos+1
         end
 
-        print('5')
         -- specific properties
         props = entity:getPropertyIterator()
         while props:hasNext() do
@@ -87,7 +78,6 @@ function loadMap(mapId, map)
             pos = pos+1
         end
 
-        print('6')
         -- some entities need to know their properties before they can be resized
         if entity:isSizeVariable() then
             entity:setSize(e[5], e[6])
