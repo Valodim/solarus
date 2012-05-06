@@ -34,10 +34,10 @@ if __name__ == "__main__":
         # I used to do something with those names, but we don't really need them anymore. Ah well.
         entity_types = {
                  0: [ 'tiles'              , '{}, {}, {}, {}, {}, {}' ],
-                 1: [ 'destinations'       , '{}, {}, {}, "{:s}", {}' ],
+                 1: [ 'destinations'       , '{}, {}, {}, "{:s}", {}, {}' ],
                  2: [ 'teletransporters'   , '{}, {}, {}, {}, {}, "{:s}", {}, "{:s}"' ],
                  3: [ 'pickable_items'     , '{}, {}, {}, "{:s}", {}, {}' ],
-                 4: [ 'destructible_items' , '{}, {}, {}, {}, "{:s}", {}' ],
+                 4: [ 'destructible_items' , '{}, {}, {}, {}, "{:s}", {}, {}' ],
                  5: [ 'chests'             , '{}, {}, {}, "{:s}", {}, "{:s}", {}, {}' ],
                  6: [ 'jump_sensors'       , '{}, {}, {}, {}, {}, "{:s}", {}, {}' ],
                  7: [ 'enemys'             , '{}, {}, {}, "{:s}", {}, "{:s}", {}, {}, "{:s}", {}, {}' ],
