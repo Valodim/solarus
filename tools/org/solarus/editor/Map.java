@@ -23,6 +23,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import org.solarus.editor.entities.*;
 
+import org.keplerproject.luajava.LuaStateFactory;
+import org.keplerproject.luajava.LuaState;
+
 /**
  * This class describes a map.
  * A map is observable.
@@ -989,12 +992,42 @@ public class Map extends Observable {
 	}
     }
     
+    public void load_lua() throws ZSDXException {
+        // start a clean slate lua state
+        LuaState L = LuaStateFactory.newLuaState();
+        // standard libs should be available
+        L.openLibs();
+
+        // read the map loader
+        L.LdoFile("maploader.lua");
+
+        L.getField(LuaState.LUA_GLOBALSINDEX, "loadMap");
+        // provide the map id to load
+        L.pushString(mapId);
+        // provide a reference to this object, expecting a lot of setters
+        L.pushJavaObject(this);
+        // Go!
+        L.call(2, 1);
+
+        int i = L.LcheckInteger(-1);
+
+        System.out.println("Load status: " + i);
+    }
+
     /**
      * Loads the map from its file.
      * @throws ZSDXException if the file could not be read
      */
     public void load() throws ZSDXException {
-	
+        load_lua();
+
+	setChanged();
+	notifyObservers();
+
+        // Make the compiler happy :)
+        if(true)
+            return;
+
 	int lineNumber = 0;
 	try {
 
