@@ -256,6 +256,10 @@ public class Map extends Observable {
 	return size.height;
     }
 
+    public void setSize(int width, int height) throws MapException {
+        setSize(new Dimension(width, height));
+    }
+
     /**
      * Changes the map size.
      * If the new size is lower than the old one, the tiles in the removed area
@@ -507,6 +511,10 @@ public class Map extends Observable {
      */
     public Point getLocation() {
         return location;
+    }
+
+    public void setLocation(int x, int y) {
+        setLocation(new Point(x, y));
     }
 
     /**
