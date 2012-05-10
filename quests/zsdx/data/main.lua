@@ -11,7 +11,7 @@ Main = {
 }
 
 -- special function: called every tick by the engine!
-function Main.update()
+function sol.events.update()
     for k, t in ipairs(Main.tickers) do
         t:update()
     end
